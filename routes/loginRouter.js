@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const bcrypt = require('bcrypt')
+const { UsrValidation, validateUsrLogin} = require('../middleware/validators')
+const { UsrLogin} = require('../controllers/loginController')
+const { isAuth } = require('../middleware/auth')
 ///////////////////////////////////////////////////////////
 
 
@@ -11,19 +13,13 @@ router.get('/', (req,res) => {
     res.render('pages/login')
 }) 
 
-router.post('/', async (req,res) => {
-    const password = req.body.password
-    try{
-        if(await bcrypt.compare(password, hashedPassword)) {
-            res.send('success')
-        } else {
-            res.send('not allowed')
-        }
-    } catch (e) {
-        res.send(e)
-    }
-        
+router.post('/', validateUsrLogin, UsrValidation, UsrLogin)
+
+router.get('/auth', (req,res) => {
+    res.send('Success')
 })
+router.post('/auth', isAuth)
+
 
 module.exports = router
 

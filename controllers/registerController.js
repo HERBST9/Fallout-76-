@@ -11,17 +11,13 @@ exports.setRegister = async (req,res) => {
     if(!isMail) {
         res.send('This Email is Taken')
     }
-    const hashedPassword = await bcrypt.hash(password, 10)
-    console.log(hashedPassword)
-    const register = new Register({
-        name: name,
-        email: email,
-        password:hashedPassword
-    })
-    console.log(register)
-
     try{
-        const newRegister = await register.save()
+        const newRegister = await Register({
+            name,
+            email,
+            password
+        })
+        await newRegister.save()
         res.redirect('/login')
 
     } catch (e) {

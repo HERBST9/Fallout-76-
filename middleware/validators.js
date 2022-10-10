@@ -1,5 +1,5 @@
 const express = require('express')
-const { check } = require('express-validator')
+const { check, validationResult } = require('express-validator')
 
 
 exports.validateRegister= [
@@ -32,3 +32,16 @@ exports.validateRegister= [
     }),
 ];
 
+exports.UsrValidation = (req,res,next) => {
+  const result = validationResult(req).array()
+  if(!result.length) return next()
+  const error = result[0].msg
+  res.json({success:false, message:error})
+
+}
+
+exports.validateUsrLogin = [
+  check('email').trim().isEmail().withMessage('Required Email!'),
+  check('password').trim().not().isEmpty().withMessage('Required Password!'),
+
+]

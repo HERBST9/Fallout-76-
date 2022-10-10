@@ -3,7 +3,7 @@ const router = express.Router()
 
 
 
-router.get('/pricing', (req,res) => {
+router.get('/', (req,res) => {
     res.render('pages/pricing')
 })
 
